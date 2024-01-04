@@ -21,24 +21,24 @@ int TransformBoardChar(char character)
 
 void Battleship::PrintConfig()
 {
-    cout << posLetter << posNumber << " ";
-    cout << dirLetter << " " << length;
+    cout << positionLetter << positionNumber << " ";
+    cout << directionLetter << " " << length;
 }
 
 bool Battleship::CheckConfig(int playerShipBoard[][BOARD_WIDTH], int sixTileShips, int fourTileShips, int threeTileShips, int twoTileShips)
 {
-    if ((posLetter < 'A' || posLetter > 'J') && (posLetter < 'a' || posLetter > 'j'))
+    if ((positionLetter < 'A' || positionLetter > 'J') && (positionLetter < 'a' || positionLetter > 'j'))
     {
         return false;
     }
 
-    if (posNumber > 10)
+    if (positionNumber > 10)
     {
         return false;
     }
 
-    if (dirLetter != 'r' && dirLetter != 'l' && dirLetter != 'u' && dirLetter != 'd' &&
-        dirLetter != 'R' && dirLetter != 'L' && dirLetter != 'U' && dirLetter != 'D')
+    if (directionLetter != 'r' && directionLetter != 'l' && directionLetter != 'u' && directionLetter != 'd' &&
+        directionLetter != 'R' && directionLetter != 'L' && directionLetter != 'U' && directionLetter != 'D')
     {
         return false;
     }
@@ -48,32 +48,32 @@ bool Battleship::CheckConfig(int playerShipBoard[][BOARD_WIDTH], int sixTileShip
         return false;
     }
 
-    if (sixTileShips > MAX_6TILE_SHIPS_AMOUNT)
+    if (sixTileShips > SIX_TILE_SHIPS_AMOUNT)
     {
         return false;
     }
 
-    if (fourTileShips > MAX_4TILE_SHIPS_AMOUNT)
+    if (fourTileShips > FOUR_TILE_SHIPS_AMOUNT)
     {
         return false;
     }
 
-    if (threeTileShips > MAX_3TILE_SHIPS_AMOUNT)
+    if (threeTileShips > THREE_TILE_SHIPS_AMOUNT)
     {
         return false;
     }
 
-    if (twoTileShips > MAX_2TILE_SHIPS_AMOUNT)
+    if (twoTileShips > TWO_TILE_SHIPS_AMOUNT)
     {
         return false;
     }
 
-    int widthIndex = TransformBoardChar(posLetter);
+    int widthIndex = TransformBoardChar(positionLetter);
 
-    if (((dirLetter == 'r' || dirLetter == 'R') && (widthIndex + length > BOARD_WIDTH)) ||
-        ((dirLetter == 'l' || dirLetter == 'L') && (widthIndex - length + 1 < 0)) ||
-        ((dirLetter == 'u' || dirLetter == 'U') && (posNumber - length < 0)) ||
-        ((dirLetter == 'd' || dirLetter == 'D') && (posNumber + length - 1 > BOARD_HEIGHT)))
+    if (((directionLetter == 'r' || directionLetter == 'R') && (widthIndex + length > BOARD_WIDTH)) ||
+        ((directionLetter == 'l' || directionLetter == 'L') && (widthIndex - length + 1 < 0)) ||
+        ((directionLetter == 'u' || directionLetter == 'U') && (positionNumber - length < 0)) ||
+        ((directionLetter == 'd' || directionLetter == 'D') && (positionNumber + length - 1 > BOARD_HEIGHT)))
     {
         return false;
     }
@@ -86,20 +86,20 @@ void Battleship::InputBattleshipConfig(int& sixTileShips, int& fourTileShips, in
     string buffer = " ";
     cin >> buffer;
    
-    posLetter = buffer[0];
+    positionLetter = buffer[0];
     
     if (buffer.length() == 2)
     {
-        posNumber = buffer[1] - '0';
+        positionNumber = buffer[1] - '0';
     }
     else if (buffer.length() == 3)
     {
-        posNumber = 0;
-        posNumber += (buffer[1] - '0') * 10;
-        posNumber += buffer[2] - '0';
+        positionNumber = 0;
+        positionNumber += (buffer[1] - '0') * 10;
+        positionNumber += buffer[2] - '0';
     }
     
-    cin >> dirLetter;
+    cin >> directionLetter;
     cin >> length;
 
     switch (length)
@@ -123,10 +123,10 @@ void Battleship::WriteBattleshipCoordinates()
 {
     // All coordinates are writen in ascending order
     // Maximum coordinates count is 6, all unused element have values -2
-    if (dirLetter == 'r' || dirLetter == 'R')
+    if (directionLetter == 'r' || directionLetter == 'R')
     {
-        shipCoordinates[0].x = posNumber - 1;
-        shipCoordinates[0].y = TransformBoardChar(posLetter);
+        shipCoordinates[0].x = positionNumber - 1;
+        shipCoordinates[0].y = TransformBoardChar(positionLetter);
 
         for (int i = 1; i < length; i++)
         {
@@ -135,10 +135,10 @@ void Battleship::WriteBattleshipCoordinates()
         }
     }
 
-    if (dirLetter == 'l' || dirLetter == 'L')
+    if (directionLetter == 'l' || directionLetter == 'L')
     {
-        shipCoordinates[length - 1].x = posNumber - 1;
-        shipCoordinates[length - 1].y = TransformBoardChar(posLetter);
+        shipCoordinates[length - 1].x = positionNumber - 1;
+        shipCoordinates[length - 1].y = TransformBoardChar(positionLetter);
 
         for (int i = length - 2; i >= 0; i--)
         {
@@ -147,10 +147,10 @@ void Battleship::WriteBattleshipCoordinates()
         }
     }
 
-    if (dirLetter == 'u' || dirLetter == 'U')
+    if (directionLetter == 'u' || directionLetter == 'U')
     {
-        shipCoordinates[length - 1].x = posNumber - 1;
-        shipCoordinates[length - 1].y = TransformBoardChar(posLetter);
+        shipCoordinates[length - 1].x = positionNumber - 1;
+        shipCoordinates[length - 1].y = TransformBoardChar(positionLetter);
 
         for (int i = length - 2; i >= 0; i--)
         {
@@ -159,10 +159,10 @@ void Battleship::WriteBattleshipCoordinates()
         }
     }
 
-    if (dirLetter == 'd' || dirLetter == 'D')
+    if (directionLetter == 'd' || directionLetter == 'D')
     {
-        shipCoordinates[0].x = posNumber - 1;
-        shipCoordinates[0].y = TransformBoardChar(posLetter);
+        shipCoordinates[0].x = positionNumber - 1;
+        shipCoordinates[0].y = TransformBoardChar(positionLetter);
 
         for (int i = 1; i < length; i++)
         {
@@ -186,20 +186,20 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
 {
     bool trigger = false;
 
-    if ((posLetter < 'A' || posLetter > 'J') && (posLetter < 'a' || posLetter > 'j'))
+    if ((positionLetter < 'A' || positionLetter > 'J') && (positionLetter < 'a' || positionLetter > 'j'))
     {
         cout << "Please input valid position character from A to J" << endl;
         
         trigger = true;
     }
-    if (posNumber > 10)
+    if (positionNumber > 10)
     {
         cout << "Please input valid position number from 1 to 10" << endl;
         
         trigger = true;
     }
-    if (dirLetter != 'r' && dirLetter != 'l' && dirLetter != 'u' && dirLetter != 'd' &&
-        dirLetter != 'R' && dirLetter != 'L' && dirLetter != 'U' && dirLetter != 'D')
+    if (directionLetter != 'r' && directionLetter != 'l' && directionLetter != 'u' && directionLetter != 'd' &&
+        directionLetter != 'R' && directionLetter != 'L' && directionLetter != 'U' && directionLetter != 'D')
     {
         cout << "Please input valid direction" << endl;
         
@@ -212,7 +212,7 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         trigger = true;
     }
 
-    if (sixTileShips > MAX_6TILE_SHIPS_AMOUNT)
+    if (sixTileShips > SIX_TILE_SHIPS_AMOUNT)
     {
         cout << "Please input valid length, you reached max number of 6 tile ships" << endl;
         
@@ -221,7 +221,7 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         trigger = true;
     }
 
-    if (fourTileShips > MAX_4TILE_SHIPS_AMOUNT)
+    if (fourTileShips > FOUR_TILE_SHIPS_AMOUNT)
     {
         cout << "Please input valid length, you reached max number of 4 tile ships" << endl;
         
@@ -230,7 +230,7 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         trigger = true;
     }
 
-    if (threeTileShips > MAX_3TILE_SHIPS_AMOUNT)
+    if (threeTileShips > THREE_TILE_SHIPS_AMOUNT)
     {
         cout << "Please input valid length, you reached max number of 3 tile ships" << endl;
         
@@ -239,7 +239,7 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         trigger = true;
     }
 
-    if (twoTileShips > MAX_2TILE_SHIPS_AMOUNT)
+    if (twoTileShips > TWO_TILE_SHIPS_AMOUNT)
     {
         cout << "Please input valid length, you reached max number of 2 tile ships" << endl;
         
@@ -248,12 +248,12 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         trigger = true;
     }
 
-    int widthIndex = TransformBoardChar(posLetter);
+    int widthIndex = TransformBoardChar(positionLetter);
 
-    if (((dirLetter == 'r' || dirLetter == 'R') && (widthIndex + length > BOARD_WIDTH)) ||
-        ((dirLetter == 'l' || dirLetter == 'L') && (widthIndex - length + 1 < 0)) ||
-        ((dirLetter == 'u' || dirLetter == 'U') && (posNumber - length < 0)) ||
-        ((dirLetter == 'd' || dirLetter == 'D') && (posNumber + length - 1 > BOARD_HEIGHT)))
+    if (((directionLetter == 'r' || directionLetter == 'R') && (widthIndex + length > BOARD_WIDTH)) ||
+        ((directionLetter == 'l' || directionLetter == 'L') && (widthIndex - length + 1 < 0)) ||
+        ((directionLetter == 'u' || directionLetter == 'U') && (positionNumber - length < 0)) ||
+        ((directionLetter == 'd' || directionLetter == 'D') && (positionNumber + length - 1 > BOARD_HEIGHT)))
     {
         cout << "Your ship is too long to fit the board" << endl;
         
@@ -281,7 +281,7 @@ bool Battleship::IsColliding(int playerShipBoard[][BOARD_WIDTH])
         int x = shipCoordinates[i].x;
         int y = shipCoordinates[i].y;
         
-        if (playerShipBoard[x][y] == BOARD_COLLISION_AREA || playerShipBoard[x][y] == BOARD_SHIP)
+        if (playerShipBoard[x][y] == COLLISION_AREA || playerShipBoard[x][y] == SHIP)
         {
             return true;
         }
@@ -314,7 +314,7 @@ void Battleship::AddHitCollision(int playerHitBoard[][BOARD_WIDTH])
         {
             if (i >= 0 && j >= 0 && i < BOARD_HEIGHT && j < BOARD_HEIGHT)
             {
-                playerHitBoard[i][j] = BOARD_COLLISION_AREA;
+                playerHitBoard[i][j] = COLLISION_AREA;
             }
         }
     }
@@ -334,7 +334,7 @@ void Battleship::AddShipCollision(int playerShipBoard[][BOARD_WIDTH])
         {
             if (i >= 0 && j >= 0 && i < BOARD_HEIGHT && j < BOARD_HEIGHT)
             {
-                playerShipBoard[i][j] = BOARD_COLLISION_AREA;
+                playerShipBoard[i][j] = COLLISION_AREA;
             }
         }
     }
@@ -354,7 +354,7 @@ void Battleship::EraseShipCollision(int playerShipBoard[][BOARD_WIDTH])
         {
             if (i >= 0 && j >= 0 && i < BOARD_HEIGHT && j < BOARD_HEIGHT)
             {
-                playerShipBoard[i][j] = BOARD_BLANKSPACE;
+                playerShipBoard[i][j] = WATER;
             }
         }
     }
@@ -367,7 +367,7 @@ void Battleship::AddToHitBoard(int playerHitBoard[][BOARD_WIDTH])
     {
         int x = hitCoordinates[i].x;
         int y = hitCoordinates[i].y;
-        playerHitBoard[x][y] = BOARD_SHIP;
+        playerHitBoard[x][y] = SHIP;
     }
 }
 
@@ -377,7 +377,7 @@ void Battleship::AddToShipBoard(int playerShipBoard[][BOARD_WIDTH])
     {
         int x = shipCoordinates[i].x;
         int y = shipCoordinates[i].y;
-        playerShipBoard[x][y] = BOARD_SHIP;
+        playerShipBoard[x][y] = SHIP;
     }
 }
 
@@ -387,6 +387,6 @@ void Battleship::EraseFromShipBoard(int playerShipBoard[][BOARD_WIDTH])
     {
         int x = shipCoordinates[i].x;
         int y = shipCoordinates[i].y;
-        playerShipBoard[x][y] = BOARD_BLANKSPACE;
+        playerShipBoard[x][y] = WATER;
     }
 }

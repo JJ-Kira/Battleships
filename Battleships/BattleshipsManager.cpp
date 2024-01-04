@@ -26,27 +26,26 @@ void BattleshipsManager::LetTheGameBegin() {
 bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
     while (activePlayer.PlayerTurn(activeEnemy))
     {
-        // If opposite player runs out of ships, the game ends 
-        if (activeEnemy.sixTileShips + activeEnemy.fourTileShips + activeEnemy.threeTileShips + activeEnemy.twoTileShips <= 0)
+        // If enemy player runs out of ships, the game ends 
+        if (activeEnemy.GetShipCount())
         {
             ClearConsole();
 
-            // Displays player ship board and hit board
-            Display2Boards(activePlayer.ShipBoard, activePlayer.HitBoard);
+            DisplayPlayerAndEnemyBoards(activePlayer.ShipBoard, activePlayer.HitBoard);
 
             cout << endl;
-            cout << "PLAYER 1 has won" << endl;
+            cout << activePlayer.Name << " has won!" << endl;
 
             return true;
         }
 
         char answer = ' ';
-        // Improvised pause
+
         while (answer != 'y' && answer != 'Y')
         {
             cout << endl;
             cout << "Continue game?" << endl;
-            cout << "Type Y/y : ";
+            cout << "Y/y: ";
             cin >> answer;
         }
     }

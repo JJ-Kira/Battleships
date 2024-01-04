@@ -9,15 +9,14 @@ using namespace std;
 // Transform A to 0, B to 1 ....
 int TransformBoardChar(char character);
 
-struct Point
-{
+struct Point {
     int x = -2, y = -2;
 };
 
-struct Battleship
-{
-    char posLetter = ' ', dirLetter = ' ';
-    int posNumber = -1, length = 0;
+class Battleship {
+public:
+    char positionLetter = ' ', directionLetter = ' ';
+    int positionNumber = -1, length = 0;
 
     // Ship coordinates on player's board
     Point shipCoordinates[MAX_SHIP_SIZE] = {};

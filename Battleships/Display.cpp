@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void DisplayBoard(int playerShipBoard[][BOARD_WIDTH])
+void DisplayPlayerBoard(int playerBoard[][BOARD_WIDTH])
 {
     cout << endl;
     cout << "      A B C D E F G H I J" << endl;
@@ -25,15 +25,15 @@ void DisplayBoard(int playerShipBoard[][BOARD_WIDTH])
 
         for (int j = 0; j < BOARD_WIDTH; j++)
         {
-            switch (playerShipBoard[i][j])
+            switch (playerBoard[i][j])
             {
-                case BOARD_SHIP:
+                case SHIP:
                     cout << " O";
                     break;
-                case BOARD_COLLISION_AREA:
-                    cout << " !";
+                case COLLISION_AREA:
+                    cout << " *";
                     break;
-                case BOARD_HIT:
+                case HIT:
                     cout << " X";
                     break;
                 case MISS:
@@ -48,7 +48,7 @@ void DisplayBoard(int playerShipBoard[][BOARD_WIDTH])
     }
 }
 
-void Display2Boards(int playerShipBoard[][BOARD_WIDTH], int playerHitBoard[][BOARD_WIDTH])
+void DisplayPlayerAndEnemyBoards(int playerBoard[][BOARD_WIDTH], int enemyBoard[][BOARD_WIDTH])
 {
     cout << endl;
     cout << "      Ship board                     Hit board" << endl;
@@ -71,15 +71,15 @@ void Display2Boards(int playerShipBoard[][BOARD_WIDTH], int playerHitBoard[][BOA
 
         for (int j = 0; j < BOARD_WIDTH; j++)
         {
-            switch (playerShipBoard[i][j])
+            switch (playerBoard[i][j])
             {
-            case BOARD_SHIP:
+            case SHIP:
                 cout << " O";
                 break;
-            case BOARD_COLLISION_AREA:
-                cout << " !";
+            case COLLISION_AREA:
+                cout << " *";
                 break;
-            case BOARD_HIT:
+            case HIT:
                 cout << " X";
                 break;
             case MISS:
@@ -105,15 +105,15 @@ void Display2Boards(int playerShipBoard[][BOARD_WIDTH], int playerHitBoard[][BOA
 
         for (int j = 0; j < BOARD_WIDTH; j++)
         {
-            switch (playerHitBoard[i][j])
+            switch (enemyBoard[i][j])
             {
-            case BOARD_SHIP:
+            case SHIP:
                 cout << " O";
                 break;
-            case BOARD_COLLISION_AREA:
-                cout << " !";
+            case COLLISION_AREA:
+                cout << " *";
                 break;
-            case BOARD_HIT:
+            case HIT:
                 cout << " X";
                 break;
             case MISS:

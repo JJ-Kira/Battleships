@@ -1,42 +1,41 @@
 #pragma once
 #include <cstring>
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
 #include "Player.h"
 #include "Display.h"
 
 using namespace std;
 
-int Player::GetShipIdx(string searchedConfig)
+int Player::GetShipId(string shipConfig)
 {
     
-    char posLetter = ' ', dirLetter = ' ';
-    int posNumber = 0, length = 0;
+    char positionLetter = ' ', directionLetter = ' ';
+    int positionNumber = 0, length = 0;
 
-    
-    posLetter = searchedConfig[0];
+    positionLetter = shipConfig[0];
 
-    if (searchedConfig.length() == 6)
+    if (shipConfig.length() == 6)
     {
-        posNumber = searchedConfig[1] - '0';
-        dirLetter = searchedConfig[3];
-        length = searchedConfig[5] - '0';
+        positionNumber = shipConfig[1] - '0';
+        directionLetter = shipConfig[3];
+        length = shipConfig[5] - '0';
     }
-    else if (searchedConfig.length() == 7)
+    else if (shipConfig.length() == 7)
     {
-        posNumber += (searchedConfig[1] - '0') * 10;
-        posNumber += searchedConfig[2] - '0';
-        dirLetter = searchedConfig[4];
-        length = searchedConfig[6] - '0';
+        positionNumber += (shipConfig[1] - '0') * 10;
+        positionNumber += shipConfig[2] - '0';
+        directionLetter = shipConfig[4];
+        length = shipConfig[6] - '0';
     }
 
     // Search for wanted ship in player's battleships
-    for (int i = 0; i < MAX_SHIPS_AMOUNT; i++)
+    for (int i = 0; i < SHIPS_AMOUNT; i++)
     {
         Battleship battleship = battleships[i];
-        if (battleship.posLetter == posLetter && battleship.posNumber == posNumber &&
-            battleship.dirLetter == dirLetter && battleship.length == length)
+        if (battleship.positionLetter == positionLetter && battleship.positionNumber == positionNumber &&
+            battleship.directionLetter == directionLetter && battleship.length == length)
         {
             return i;
         }
@@ -44,11 +43,11 @@ int Player::GetShipIdx(string searchedConfig)
     return -1;
 }
 
-int Player::GetHitShipIdx(Battleship enemyBattleships[], Point hitPoint)
+int Player::GetHitShipId(Battleship enemyBattleships[], Point hitPoint)
 {
 
     // All elements of enemy's battleships
-    for (int i = 0; i < MAX_SHIPS_AMOUNT; i++)
+    for (int i = 0; i < SHIPS_AMOUNT; i++)
     {
         // All elements of enemy's battleship coordinates
         for (int j = 0; j < enemyBattleships[i].length; j++)
@@ -58,58 +57,53 @@ int Player::GetHitShipIdx(Battleship enemyBattleships[], Point hitPoint)
             // Search for battleship's index that hitPoint belongs to
             if (enemyBattleships[i].shipCoordinates[j].x == hitPoint.x && 
                 enemyBattleships[i].shipCoordinates[j].y == hitPoint.y)
-            {
                 return i;
-            }
         }
-
     }
-
-    // If smth is wrong, return -1
     return -1;
 }
 
-void Player::GetConfigFromFile()
+void Player::ReadConfigFile()
 {
-    fstream userFile;
+    fstream file;
     string filePath;
    
-    cout << "Please input file path : ";
+    cout << "Please input the file path: ";
     cin >> filePath;
-    userFile.open(filePath, fstream::in);
+    file.open(filePath, fstream::in);
 
     // If file can't be open
-    while (!userFile.is_open())
+    while (!file.is_open())
     {
-        cout << "Failed to open file" << endl;
-        cout << "Please input file path : ";
+        cout << "Failed to open the file!" << endl;
+        cout << "Please input the correct file path: ";
         cin >> filePath;
-        userFile.open(filePath, fstream::in);
+        file.open(filePath, fstream::in);
     }
    
     string buffer;
 
-    // Reading each file line until MAX_SHIPS_AMOUNT is reached
+    // Reading each file line until SHIPS_AMOUNT is reached
     int i;
-    for (i = 0; getline(userFile, buffer) && i < MAX_SHIPS_AMOUNT; i++)
+    for (i = 0; getline(file, buffer) && i < SHIPS_AMOUNT; i++)
     {
         Battleship& battleship = battleships[i];
         
         // Transforming each buffer to certain data structure members
         if (buffer.length() == 6 || buffer.length() == 7)
         {
-            battleship.posLetter = buffer[0];
+            battleship.positionLetter = buffer[0];
             
             if (buffer.length() == 6)
             {
-                battleship.posNumber = buffer[1] - '0';
-                battleship.dirLetter = buffer[3];
+                battleship.positionNumber = buffer[1] - '0';
+                battleship.directionLetter = buffer[3];
                 battleship.length = buffer[5] - '0';
             }
             else if (buffer.length() == 7)
             {
-                battleship.posNumber = (buffer[1] - '0') * 10 + (buffer[2] - '0');
-                battleship.dirLetter = buffer[4];
+                battleship.positionNumber = (buffer[1] - '0') * 10 + (buffer[2] - '0');
+                battleship.directionLetter = buffer[4];
                 battleship.length = buffer[6] - '0';
             }
         }
@@ -163,8 +157,8 @@ void Player::GetConfigFromFile()
             }
             
             cout << endl;
-            cout << "Your ship is colliding with previously added ships" << endl;
-            cout << "Position to edit : ";
+            cout << "A ship is colliding with some previously added ships" << endl;
+            cout << "Position to edit: ";
             battleship.PrintConfig();
             
             cout << endl;
@@ -172,7 +166,7 @@ void Player::GetConfigFromFile()
             // First erase previos coordinates
             battleship.EraseBattleshipCoordinates();
             
-            cout << "Correct your ship configuration : ";
+            cout << "Correct the ship's configuration: ";
             // Second input new configuration
             battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
             
@@ -188,13 +182,13 @@ void Player::GetConfigFromFile()
 
     }
     
-    userFile.close();
+    file.close();
     
     // File configuration is too short
-    if (i != MAX_SHIPS_AMOUNT)
+    if (i != SHIPS_AMOUNT)
     {
         cout << endl;
-        cout << "Error, too few ships in current file" << endl;
+        cout << "Error, wrong number of ships in the file." << endl;
         
         exit(-1);
     }
@@ -211,38 +205,36 @@ void Player::PlayerStart()
     
     while (answer != "Y" && answer != "y" && answer != "N" && answer != "n")
     {
-        cout << "Would you like to upload ship configuration from file?" << endl;
-        cout << "Y / N? : ";
+        cout << "Would you like to upload your battleships' placement from file?" << endl;
+        cout << "Y/N?: ";
         cin >> answer;
     }
     
     if (answer == "Y" || answer == "y")
     {
-        GetConfigFromFile();
+        ReadConfigFile();
         
         // Before continuing show board
-        DisplayBoard(ShipBoard);
+        DisplayPlayerBoard(ShipBoard);
 
         char answer = ' ';
-        // Improvised pause
         while (answer != 'y' && answer != 'Y')
         {
             cout << endl;
             cout << "Proceed?" << endl;
-            cout << "Type Y/y : ";
+            cout << "Y/y: ";
             cin >> answer;
         }
     }
     else
     {
-
-        for (int i = 0; i <= MAX_SHIPS_AMOUNT;)
+        for (int i = 0; i <= SHIPS_AMOUNT;)
         {
             cout << endl;
-            cout << "2 tile ships: " << twoTileShips << endl;
-            cout << "3 tile ships: " << threeTileShips << endl;
-            cout << "4 tile ships: " << fourTileShips << endl;
-            cout << "6 tile ships: " << sixTileShips << endl;
+            cout << "Number of 2 tile ships: " << twoTileShips << endl;
+            cout << "Number of 3 tile ships: " << threeTileShips << endl;
+            cout << "Number of 4 tile ships: " << fourTileShips << endl;
+            cout << "Number of 6 tile ships: " << sixTileShips << endl;
             cout << endl;
             
             string answer = " ";
@@ -254,27 +246,26 @@ void Player::PlayerStart()
                 cout << "1. Input next ship" << endl;
                 cout << "2. Show ship board" << endl;
                 cout << endl;
-                cout << "Choose option : ";
+                cout << "Chosen option: ";
             }
             // If somewhere in the middle, menu is full
-            else if (i < MAX_SHIPS_AMOUNT)
+            else if (i < SHIPS_AMOUNT)
             {
-                cout << "1. Input next ship" << endl;
-                cout << "2. Edit ship configuration" << endl;
-                cout << "3. Show ship board" << endl;
+                cout << "1. Input the next ship" << endl;
+                cout << "2. Edit ships' placement" << endl;
+                cout << "3. Show the board" << endl;
                 cout << endl;
-                cout << "Choose option : ";
+                cout << "Chosen option: ";
             }
             //  At the end no ships should be added
-            else if (i == MAX_SHIPS_AMOUNT)
+            else if (i == SHIPS_AMOUNT)
             {
                 cout << "1. Edit ship configuration" << endl;
                 cout << "2. Show ship board" << endl;
                 cout << "3. Finish" << endl;
                 cout << endl;
-                cout << "Choose option : ";
+                cout << "Chosen option: ";
             }
-            
             cin >> answer;
             
             // If there is no match for answer, clear console and start all over
@@ -285,13 +276,13 @@ void Player::PlayerStart()
             }
 
             // Input ship option
-            if (answer == "1" && i < MAX_SHIPS_AMOUNT)
+            if (answer == "1" && i < SHIPS_AMOUNT)
             {
                 Battleship& battleship = battleships[i];
                 
                 cout << endl;
                 cout << "Input your ship configuration in format A1 R L , where A1 is starting tile, R is direction and L is length: " << endl;
-                cout << "Input ship " << i + 1 << " : ";
+                cout << "Input ship " << i + 1 << ": ";
 
                 // Inputting ship
                 battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
@@ -356,7 +347,7 @@ void Player::PlayerStart()
                 cout << endl;
             }
             // Edit ship option
-            else if ((answer == "2" && i < MAX_SHIPS_AMOUNT) || (answer == "1" && i == MAX_SHIPS_AMOUNT))
+            else if ((answer == "2" && i < SHIPS_AMOUNT) || (answer == "1" && i == SHIPS_AMOUNT))
             {
                 string buffer = " ";
                 
@@ -370,7 +361,7 @@ void Player::PlayerStart()
                 cout << endl;
                 
                 // Search for ship with given configuration
-                while (GetShipIdx(buffer) == -1)
+                while (GetShipId(buffer) == -1)
                 {
                     cout << "No ship with such config" << endl;
                     cout << "Input ship to be edited : ";
@@ -378,7 +369,7 @@ void Player::PlayerStart()
                 }
 
                 // Ship that user wants to edit
-                Battleship& battleship = battleships[GetShipIdx(buffer)];
+                Battleship& battleship = battleships[GetShipId(buffer)];
                 
                 // Erase collision are
                 battleship.EraseShipCollision(ShipBoard);
@@ -477,12 +468,12 @@ void Player::PlayerStart()
                 battleship.AddToShipBoard(ShipBoard);
             }
             // Show board option
-            else if ((answer == "3" && i < MAX_SHIPS_AMOUNT) || (answer == "2" && i == MAX_SHIPS_AMOUNT) || (answer == "2" && i == 0))
+            else if ((answer == "3" && i < SHIPS_AMOUNT) || (answer == "2" && i == SHIPS_AMOUNT) || (answer == "2" && i == 0))
             {
-                DisplayBoard(ShipBoard);
+                DisplayPlayerBoard(ShipBoard);
             }
             // Finish option
-            else if ((answer == "3" && i == MAX_SHIPS_AMOUNT))
+            else if ((answer == "3" && i == SHIPS_AMOUNT))
             {
                 break;
             }
@@ -522,19 +513,19 @@ bool Player::PlayerTurn(Player& enemy)
         // Show hit board option
         if (answer == "1")
         {
-            DisplayBoard(HitBoard);
+            DisplayPlayerBoard(HitBoard);
             answer = " ";
         }
         // Show ship and hit boards option
         else if (answer == "2")
         {
-            Display2Boards(ShipBoard, HitBoard);
+            DisplayPlayerAndEnemyBoards(ShipBoard, HitBoard);
             answer = " ";
         }
         // Fire option
         else if (answer == "3")
         {
-            cout << "Input tile coordinates to fire at : ";
+            cout << "Input coordinates to fire at: ";
             break;
         }
         
@@ -556,8 +547,8 @@ bool Player::PlayerTurn(Player& enemy)
     {
         
         cout << endl;
-        cout << "Please, input valid coordinate in format A1/A10" << endl;
-        cout << "Correct your input : ";
+        cout << "Incorrect input." << endl;
+        cout << "Correct your input: ";
         cin >> buffer;
     }
     
@@ -575,19 +566,19 @@ bool Player::PlayerTurn(Player& enemy)
     }
 
     // Check if shot is successful
-    if (enemy.ShipBoard[hitPoint.x][hitPoint.y] == BOARD_SHIP)
+    if (enemy.ShipBoard[hitPoint.x][hitPoint.y] == SHIP)
     {
         cout << endl;
         cout << "Result : HIT" << endl;
         
         // Mark player's hit board tile with H symbol
-        HitBoard[hitPoint.x][hitPoint.y] = BOARD_HIT;
+        HitBoard[hitPoint.x][hitPoint.y] = HIT;
         
         // Mark enemy's ship board tile with H symbol
-        enemy.ShipBoard[hitPoint.x][hitPoint.y] = BOARD_HIT;
+        enemy.ShipBoard[hitPoint.x][hitPoint.y] = HIT;
 
         // Get hit ship index 
-        int hitShipIdx = GetHitShipIdx(enemy.battleships, hitPoint);
+        int hitShipIdx = GetHitShipId(enemy.battleships, hitPoint);
 
         // Modifying ship's coordinates
         for (int i = 0; i < enemy.battleships[hitShipIdx].length; i++)
@@ -641,8 +632,25 @@ bool Player::PlayerTurn(Player& enemy)
         // Mark missed shot board tile with F symbol
         HitBoard[hitPoint.x][hitPoint.y] = MISS;
         
-        // Other player ends
+        cout << endl;
+        cout << "Result : MISS" << endl;
+
+        char answer = ' ';
+
+        while (answer != 'y' && answer != 'Y')
+        {
+            cout << endl;
+            cout << "Continue game?" << endl;
+            cout << "Y/y: ";
+            cin >> answer;
+        }
+
         return false;
     }
 
+}
+
+bool Player::GetShipCount()
+{
+    return sixTileShips + fourTileShips + threeTileShips + twoTileShips <= 0;
 }
