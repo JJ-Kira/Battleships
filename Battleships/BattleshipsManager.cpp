@@ -4,7 +4,6 @@ using namespace std;
 
 BattleshipsManager::BattleshipsManager(string name1, string name2, int numberOfPlayers) {
 	player1.Name = name1;
-	player2.Name = name2;
     mode = numberOfPlayers;
 
     ClearConsole();
@@ -12,14 +11,18 @@ BattleshipsManager::BattleshipsManager(string name1, string name2, int numberOfP
 
     ClearConsole();
     if (mode == 2)
+    {
         player2.PlayerStart();
-    else if (mode == 1)
+        player2.Name = name2;
+    }
+    else if (mode == 1){}
+    {
         enemy.PlayerStart();
+        enemy.Name = name2; 
+    }
 }
 
 void BattleshipsManager::LetTheGameBegin() {
-    Player *currentPlayer = &player1;
-
     while (true)
     {
         if (mode == 2)

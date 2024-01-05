@@ -15,14 +15,13 @@ void ArtificialEnemy::PlayerStart()
     cout << "----------" << endl;
     cout << endl;
 
-    cout << "Would you like to upload your battleships' placement from file?" << endl;
-    cout << "Y/N?: Y" << endl;
+    cout << "Wait a minute for you enemy to place their vessels." << endl;
 
-    for (int i = 0; i <= SHIPS_AMOUNT; i++)
+    for (int i = 0; i < SHIPS_AMOUNT; i++)
     {
         Battleship& battleship = battleships[i];
 
-        cout << endl << "Uploading vessel " << i + 1 << endl;
+        cout << endl << "Thinking on vessel " << i + 1 << "..." << endl;
 
         do {
             battleship.EraseBattleshipCoordinates();

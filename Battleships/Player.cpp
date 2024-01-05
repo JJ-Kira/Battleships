@@ -202,7 +202,7 @@ void Player::PlayerStart()
     }
     else
     {
-        for (int i = 0; i <= SHIPS_AMOUNT;)
+        for (int i = 0; i < SHIPS_AMOUNT;)
         {
             cout << endl;
             cout << "Number of 2 tile ships: " << twoTileShips << endl;
