@@ -8,6 +8,8 @@
 
 using namespace std;
 
+ArtificialEnemy::ArtificialEnemy(const std::string& name) : Player(name) {}
+
 void ArtificialEnemy::PlayerStart()
 {
     cout << "----------" << endl;

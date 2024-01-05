@@ -6,6 +6,7 @@
 
 class ArtificialEnemy : public Player {
 public:
-    void PlayerStart();
-    bool PlayerTurn(Player& enemy);
+    ArtificialEnemy(const std::string& name);
+    void PlayerStart() override;
+    bool PlayerTurn(Player& enemy) override;
 };

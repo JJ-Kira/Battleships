@@ -21,13 +21,15 @@ public:
 
     Battleship battleships[SHIPS_AMOUNT];
 
+    Player(const std::string& name);
+
     int ShipsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
 
     int HitsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
 
-    void PlayerStart();
+    virtual void PlayerStart();
 
-    bool PlayerTurn(Player& enemy);
+    virtual bool PlayerTurn(Player& enemy);
 
     int GetHitShipId(Battleship enemyBattleships[], Point hitPoint);
 

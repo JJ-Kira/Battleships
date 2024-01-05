@@ -169,12 +169,14 @@ void Player::ReadConfigFile()
     }
 }
 
+Player::Player(const std::string& name) : Name(name) {}
+
 void Player::PlayerStart()
 {
     string answer = " ";
     
     cout << "----------" << endl;
-    cout << Name << " :" << endl;
+    cout << Name << ":" << endl;
     cout << "----------" << endl;
     cout << endl;
     

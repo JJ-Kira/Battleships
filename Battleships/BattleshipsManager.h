@@ -11,8 +11,7 @@ using namespace std;
 
 class BattleshipsManager {
 private:
-    Player player1, player2;
-    ArtificialEnemy enemy;
+    Player** players;
     int mode;
 public:
     BattleshipsManager(string name1, string name2, int numberOfPlayers);

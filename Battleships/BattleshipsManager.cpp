@@ -3,34 +3,27 @@
 using namespace std;
 
 BattleshipsManager::BattleshipsManager(string name1, string name2, int numberOfPlayers) {
-	player1.Name = name1;
+    players = new Player * [2];
+    players[0] = new Player(name1);
     mode = numberOfPlayers;
 
     ClearConsole();
-    player1.PlayerStart();
+    players[0]->PlayerStart();
 
     ClearConsole();
     if (mode == 2)
-    {
-        player2.PlayerStart();
-        player2.Name = name2;
-    }
-    else if (mode == 1){}
-    {
-        enemy.PlayerStart();
-        enemy.Name = name2; 
-    }
+        players[1] = new Player(name2);
+    else if (mode == 1)
+        players[1] = new ArtificialEnemy(name2);
+
+    players[1]->PlayerStart();
 }
 
 void BattleshipsManager::LetTheGameBegin() {
     while (true)
     {
-        if (mode == 2)
-            if (NextTurn(player1, player2)) return;
-            if (NextTurn(player2, player1)) return;
-        else if (mode == 1)
-            if (NextTurn(player1, enemy)) return;
-            if (NextTurn(enemy, player1)) return;
+        if (NextTurn(*players[0], *players[1])) return;
+        if (NextTurn(*players[1], *players[0])) return;
     }
 }
 
