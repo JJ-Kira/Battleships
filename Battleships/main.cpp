@@ -2,7 +2,7 @@
 
 int main()
 {
-    BattleshipsManager battleships = BattleshipsManager("JJ", "Chibi");
+    BattleshipsManager battleships = BattleshipsManager("JJ", "Chibi", 1);
 
     battleships.LetTheGameBegin();
 

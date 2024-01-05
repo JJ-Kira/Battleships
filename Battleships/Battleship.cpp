@@ -29,22 +29,26 @@ bool Battleship::CheckConfig(int playerShipBoard[][BOARD_WIDTH], int sixTileShip
 {
     if ((positionLetter < 'A' || positionLetter > 'J') && (positionLetter < 'a' || positionLetter > 'j'))
     {
+        cout << positionLetter << "!";
         return false;
     }
 
     if (positionNumber > 10)
     {
+        cout << positionNumber << "!";
         return false;
     }
 
     if (directionLetter != 'r' && directionLetter != 'l' && directionLetter != 'u' && directionLetter != 'd' &&
         directionLetter != 'R' && directionLetter != 'L' && directionLetter != 'U' && directionLetter != 'D')
     {
+        cout << directionLetter << "!";
         return false;
     }
 
     if (length < 2 || length > 6 || length == 5)
     {
+        cout << length << "!";
         return false;
     }
 
@@ -168,7 +172,6 @@ void Battleship::WriteBattleshipCoordinates()
             shipsCoordinates[i].y = shipsCoordinates[0].y;
         }
     }
-
 }
 
 void Battleship::EraseBattleshipCoordinates()

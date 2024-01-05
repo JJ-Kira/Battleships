@@ -5,7 +5,15 @@
 
 class Player
 {
-protected:
+private:
+
+    int GetShipId(string searchedConfig);
+
+    void ReadConfigFile();
+
+public:
+    string Name;
+
     int sixTileShips = 0;
     int fourTileShips = 0;
     int threeTileShips = 0;
@@ -13,24 +21,17 @@ protected:
 
     Battleship battleships[SHIPS_AMOUNT];
 
-private:
-
-    int GetShipId(string searchedConfig);
-
-    int GetHitShipId(Battleship enemyBattleships[], Point hitPoint);
-
-    void ReadConfigFile();
-
-public:
-    string Name;
+    Player(const std::string& name);
 
     int ShipsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
 
     int HitsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
 
-    void PlayerStart();
+    virtual void PlayerStart();
 
-    bool PlayerTurn(Player& enemy);
+    virtual bool PlayerTurn(Player& enemy);
+
+    int GetHitShipId(Battleship enemyBattleships[], Point hitPoint);
 
     bool GetVesselCount();
 
