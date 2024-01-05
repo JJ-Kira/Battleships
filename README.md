@@ -26,4 +26,7 @@ This project allows users to play the game Battleships with the following functi
 
 - **Turn-Based Attacks:** Players take turns attacking each other.
 - **Board Visibility:** Each turn, the player can view their own board and the board showing hits.
+
 - **Game End:** The game ends when a player destroys all of their opponent's ships.
+
+![Gameplay image](https://github.com/JJ-Kira/Battleships/assets/72421493/fa63f148-5735-4056-af69-167e78164ba3)
