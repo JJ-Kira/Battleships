@@ -121,8 +121,6 @@ void Battleship::InputBattleshipConfig(int& sixTileShips, int& fourTileShips, in
 
 void Battleship::WriteBattleshipCoordinates()
 {
-    // All coordinates are writen in ascending order
-    // Maximum coordinates count is 6, all unused element have values -2
     if (directionLetter == 'r' || directionLetter == 'R')
     {
         shipsCoordinates[0].x = positionNumber - 1;
@@ -267,11 +265,8 @@ void Battleship::CorrectConfig(int playerShipBoard[][BOARD_WIDTH], int& sixTileS
         PrintConfig();
         cout << endl;
         
-        // If at least one of checks is failed, force to correct battleship configuration
         InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
     }
-
-
 }
 
 bool Battleship::IsColliding(int playerShipBoard[][BOARD_WIDTH])

@@ -1,6 +1,4 @@
-#pragma once
 #include <cstring>
-#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include "Player.h"
@@ -10,7 +8,6 @@ using namespace std;
 
 int Player::GetShipId(string shipConfig)
 {
-    
     char positionLetter = ' ', directionLetter = ' ';
     int positionNumber = 0, length = 0;
 
@@ -30,31 +27,24 @@ int Player::GetShipId(string shipConfig)
         length = shipConfig[6] - '0';
     }
 
-    // Search for wanted ship in player's battleships
     for (int i = 0; i < SHIPS_AMOUNT; i++)
     {
         Battleship battleship = battleships[i];
         if (battleship.positionLetter == positionLetter && battleship.positionNumber == positionNumber &&
             battleship.directionLetter == directionLetter && battleship.length == length)
-        {
             return i;
-        }
     }
     return -1;
 }
 
 int Player::GetHitShipId(Battleship enemyBattleships[], Point hitPoint)
 {
-
-    // All elements of enemy's battleships
     for (int i = 0; i < SHIPS_AMOUNT; i++)
     {
-        // All elements of enemy's battleship coordinates
         for (int j = 0; j < enemyBattleships[i].length; j++)
         {
             Point shipCoordinate = enemyBattleships[i].shipsCoordinates[j];
             
-            // Search for battleship's index that hitPoint belongs to
             if (enemyBattleships[i].shipsCoordinates[j].x == hitPoint.x && 
                 enemyBattleships[i].shipsCoordinates[j].y == hitPoint.y)
                 return i;
@@ -72,7 +62,6 @@ void Player::ReadConfigFile()
     cin >> filePath;
     file.open(filePath, fstream::in);
 
-    // If file can't be open
     while (!file.is_open())
     {
         cout << "Failed to open the file!" << endl;
@@ -83,13 +72,11 @@ void Player::ReadConfigFile()
    
     string buffer;
 
-    // Reading each file line until SHIPS_AMOUNT is reached
     int i;
     for (i = 0; getline(file, buffer) && i < SHIPS_AMOUNT; i++)
     {
         Battleship& battleship = battleships[i];
         
-        // Transforming each buffer to certain data structure members
         if (buffer.length() == 6 || buffer.length() == 7)
         {
             battleship.positionLetter = buffer[0];
@@ -108,7 +95,6 @@ void Player::ReadConfigFile()
             }
         }
 
-        // Adding to specific ship amount
         switch (battleship.length)
         {
         case 2:
@@ -125,21 +111,16 @@ void Player::ReadConfigFile()
             break;
         }
 
-        // Run checks to determine if format A1 R L is kept
         while (!battleship.CheckConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips))
         {
             cout << endl;
             battleship.CorrectConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips);
         }
 
-        // Write ship coordinates, in order to check if it collides in the next step 
         battleship.WriteBattleshipCoordinates();
         
-        // Running some checks to determine if already checked configurations 
-        // don't collides with each other
         while (battleship.IsColliding(ShipsBoard))
         {
-            // If IsCollidng() is true, remove one from specific ship amount
             switch (battleship.length)
             {
             case 2:
@@ -163,28 +144,22 @@ void Player::ReadConfigFile()
             
             cout << endl;
             
-            // First erase previos coordinates
             battleship.EraseBattleshipCoordinates();
             
             cout << "Correct the ship's configuration: ";
-            // Second input new configuration
             battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
             
-            // Then write new coordinates
             battleship.WriteBattleshipCoordinates();
         }
 
-        // Add area where no other ship can be put
         battleship.AddShipCollision(ShipsBoard);
         
-        // Add ship's image over collision area 
         battleship.AddToShipBoard(ShipsBoard);
 
     }
     
     file.close();
     
-    // File configuration is too short
     if (i != SHIPS_AMOUNT)
     {
         cout << endl;
@@ -213,8 +188,7 @@ void Player::PlayerStart()
     if (answer == "Y" || answer == "y")
     {
         ReadConfigFile();
-        
-        // Before continuing show board
+
         DisplayPlayerBoard(ShipsBoard);
 
         char answer = ' ';
@@ -239,8 +213,6 @@ void Player::PlayerStart()
             
             string answer = " ";
 
-            // Initially user doesn't have any ships added
-            // So no edit option is given
             if (i == 0)
             {
                 cout << "1. Input next ship" << endl;
@@ -248,7 +220,6 @@ void Player::PlayerStart()
                 cout << endl;
                 cout << "Chosen option: ";
             }
-            // If somewhere in the middle, menu is full
             else if (i < SHIPS_AMOUNT)
             {
                 cout << "1. Input the next ship" << endl;
@@ -257,7 +228,6 @@ void Player::PlayerStart()
                 cout << endl;
                 cout << "Chosen option: ";
             }
-            //  At the end no ships should be added
             else if (i == SHIPS_AMOUNT)
             {
                 cout << "1. Edit ship configuration" << endl;
@@ -268,14 +238,12 @@ void Player::PlayerStart()
             }
             cin >> answer;
             
-            // If there is no match for answer, clear console and start all over
             if (answer != "1" && answer != "2" && answer != "3")
             {
                 ClearConsole();
                 continue;
             }
 
-            // Input ship option
             if (answer == "1" && i < SHIPS_AMOUNT)
             {
                 Battleship& battleship = battleships[i];
@@ -284,20 +252,16 @@ void Player::PlayerStart()
                 cout << "Input your ship configuration in format A1 R L , where A1 is starting tile, R is direction and L is length: " << endl;
                 cout << "Input ship " << i + 1 << ": ";
 
-                // Inputting ship
                 battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
 
-                // Run checks
                 while (!battleship.CheckConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips))
                 {
                     cout << endl;
                     battleship.CorrectConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips);
                 }
 
-                // Write coordinates
                 battleship.WriteBattleshipCoordinates();
 
-                // Check if out of collision
                 while (battleship.IsColliding(ShipsBoard))
                 {
                     cout << "Your ship is colliding with previously added ships" << endl;
@@ -323,30 +287,24 @@ void Player::PlayerStart()
                     
                     cout << endl;
                     
-                    // Erase previous coordinates
                     battleship.EraseBattleshipCoordinates();
                     
                     cout << "Correct your ship configuration : ";
-                    // Input new configuration
                     battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
                     
-                    // Write new coordinates
                     battleship.WriteBattleshipCoordinates();
                 }
 
-                // Just in case, put all collision areas and ship's images again on the board
                 for (int j = 0; j <= i; j++)
                 {
                     battleships[j].AddShipCollision(ShipsBoard);
                     battleships[j].AddToShipBoard(ShipsBoard);
                 }
 
-                // Everything is fine, move to next battleship
                 i++;
                 
                 cout << endl;
             }
-            // Edit ship option
             else if ((answer == "2" && i < SHIPS_AMOUNT) || (answer == "1" && i == SHIPS_AMOUNT))
             {
                 string buffer = " ";
@@ -355,12 +313,10 @@ void Player::PlayerStart()
                 cout << "Input your ship configuration in format A1 R L , where A1 is starting tile, R is direction and L is length: " << endl;
                 cout << "Input existing ship to be edited : ";
 
-                // Get line
                 cin.ignore();
                 getline(cin, buffer);
                 cout << endl;
                 
-                // Search for ship with given configuration
                 while (GetShipId(buffer) == -1)
                 {
                     cout << "No ship with such config" << endl;
@@ -368,19 +324,14 @@ void Player::PlayerStart()
                     getline(cin, buffer);
                 }
 
-                // Ship that user wants to edit
                 Battleship& battleship = battleships[GetShipId(buffer)];
                 
-                // Erase collision are
                 battleship.EraseShipCollision(ShipsBoard);
                 
-                // Erase ship's image
                 battleship.EraseFromShipBoard(ShipsBoard);
                 
-                // Erase ship's coordinates
                 battleship.EraseBattleshipCoordinates();
 
-                // Removing one from specific ship amount
                 switch (battleship.length)
                 {
                     case 2:
@@ -397,7 +348,6 @@ void Player::PlayerStart()
                         break;
                 }
 
-                // Just in case, put all collision areas and ship's images again on the board
                 for (int j = 0; j < i; j++)
                 {
                     battleships[j].AddShipCollision(ShipsBoard);
@@ -408,20 +358,16 @@ void Player::PlayerStart()
                 cout << "Input your ship configuration in format A1 R L , where A1 is starting tile, R is direction and L is length: " << endl;
                 cout << "Input new ship configuration : ";
                 
-                // Input new ship configuration
                 battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
 
-                // Run checks
                 while (!battleship.CheckConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips))
                 {
                     cout << endl;
                     battleship.CorrectConfig(ShipsBoard, sixTileShips, fourTileShips, threeTileShips, twoTileShips);
                 }
 
-                // Write new coordinates
                 battleship.WriteBattleshipCoordinates();
 
-                // Check if out of collision
                 while (battleship.IsColliding(ShipsBoard))
                 {
                     cout << endl;
@@ -448,35 +394,23 @@ void Player::PlayerStart()
                     
                     cout << endl;
                     
-                    // Erase previous coordinates
                     battleship.EraseBattleshipCoordinates();
                     cout << "Correct your ship configuration : ";
                     
-                    // Input new ship configuration
                     battleship.InputBattleshipConfig(sixTileShips, fourTileShips, threeTileShips, twoTileShips);
                     
-                    // Write new coordinates
                     battleship.WriteBattleshipCoordinates();
-
-                    
                 }
 
-                // Add area where no other ship can be put
                 battleship.AddShipCollision(ShipsBoard);
-
-                // Add ship's image over collision area 
+ 
                 battleship.AddToShipBoard(ShipsBoard);
             }
-            // Show board option
+
             else if ((answer == "3" && i < SHIPS_AMOUNT) || (answer == "2" && i == SHIPS_AMOUNT) || (answer == "2" && i == 0))
-            {
                 DisplayPlayerBoard(ShipsBoard);
-            }
-            // Finish option
             else if ((answer == "3" && i == SHIPS_AMOUNT))
-            {
                 break;
-            }
         }
     }
 }
@@ -562,23 +496,19 @@ bool Player::PlayerTurn(Player& enemy)
         cout << endl;
         cout << "Result : HIT" << endl;
         
-        // Mark player's hit board tile with X symbol
+        // Zaznacz trafione uderzenie X
         HitsBoard[hitPoint.x][hitPoint.y] = HIT;
         
-        // Mark enemy's ship board tile with X symbol
+        // MZaznacz trafione uderzenie X
         enemy.ShipsBoard[hitPoint.x][hitPoint.y] = HIT;
 
-        // Get hit ship's id 
         int hitShipIdx = GetHitShipId(enemy.battleships, hitPoint);
 
-        // Modify hit ship's coordinates
         for (int i = 0; i < enemy.battleships[hitShipIdx].length; i++)
         {
             Point& shipCoordinate = enemy.battleships[hitShipIdx].shipsCoordinates[i];
             Point& hitCoordinate = enemy.battleships[hitShipIdx].hitsCoordinates[i];
 
-            // If ship coordinates are equal to hit point remove these coordinates
-            // from ship coordinates, then add them to hit coordinates
             if (shipCoordinate.x == hitPoint.x && shipCoordinate.y == hitPoint.y)
             {
                 hitCoordinate.x = shipCoordinate.x;
@@ -589,7 +519,7 @@ bool Player::PlayerTurn(Player& enemy)
             }
         }
 
-        // Check if the hit ship was completely destroyed
+        // Sprawdz, czy statek zatopiono
         if (enemy.battleships[hitShipIdx].IsShipSunk())
         {
             switch (enemy.battleships[hitShipIdx].length)
@@ -608,16 +538,15 @@ bool Player::PlayerTurn(Player& enemy)
                     break;
             }
             
-            // Add collision area around destroyed ship
             enemy.battleships[hitShipIdx].AddHitCollision(HitsBoard);
             enemy.battleships[hitShipIdx].AddToHitBoard(HitsBoard);
         }
         return true;
     }
-    // If MISS
+    // Przy chybieniu
     else
     {
-        // Mark missed shot board tile with M symbol
+        // Zaznaczenie nietrafionego strzalu M
         HitsBoard[hitPoint.x][hitPoint.y] = MISS;
         
         cout << endl;

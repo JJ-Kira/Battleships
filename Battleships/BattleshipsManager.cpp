@@ -26,7 +26,6 @@ void BattleshipsManager::LetTheGameBegin() {
 bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
     while (activePlayer.PlayerTurn(activeEnemy))
     {
-        // If enemy player runs out of ships, the game ends 
         if (activeEnemy.GetVesselCount())
         {
             ClearConsole();
