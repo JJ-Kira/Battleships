@@ -6,7 +6,7 @@ This project allows users to play the game Battleships with the following functi
 
 - **Ship Configuration Format:** All ships' configurations should follow the format `A1 R L` without spaces after `L`.
   - `A1` denotes the initial tile.
-  - `R` indicates the direction in which the ship expands.
+  - `R` indicates the direction in which the ship expands (up, down, left, right).
   - `L` represents the ship's length.
 - **Creating Configuration File:** Use the same format for creating your own configuration file.
 - **File Path Format:** The standard way to input file paths is `C:\\Users\\Username\\Documents\\Battleships1.txt`.

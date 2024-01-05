@@ -27,7 +27,7 @@ bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
     while (activePlayer.PlayerTurn(activeEnemy))
     {
         // If enemy player runs out of ships, the game ends 
-        if (activeEnemy.GetShipCount())
+        if (activeEnemy.GetVesselCount())
         {
             ClearConsole();
 
@@ -44,7 +44,7 @@ bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
         while (answer != 'y' && answer != 'Y')
         {
             cout << endl;
-            cout << "Continue game?" << endl;
+            cout << "Continue?" << endl;
             cout << "Y/y: ";
             cin >> answer;
         }

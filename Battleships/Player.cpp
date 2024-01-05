@@ -483,7 +483,6 @@ void Player::PlayerStart()
 
 bool Player::PlayerTurn(Player& enemy)
 {
-
     ClearConsole();
     cout << endl;
     cout << "________________________________" << endl;
@@ -496,10 +495,12 @@ bool Player::PlayerTurn(Player& enemy)
     cout << "4 tile ships: " << fourTileShips << endl;
     cout << "6 tile ships: " << sixTileShips << endl;
     cout << endl;
+
+    enemy.GetSunkVesselsCount();
+    cout << endl;
     
     string answer = " ";
 
-    // Check if answer is valid
     while (answer != "1" && answer != "2" && answer != "3")
     {
         cout << "1. Show hit board" << endl;
@@ -510,19 +511,16 @@ bool Player::PlayerTurn(Player& enemy)
         cin >> answer;
         cout << endl;
 
-        // Show hit board option
         if (answer == "1")
         {
             DisplayPlayerBoard(HitsBoard);
             answer = " ";
         }
-        // Show ship and hit boards option
         else if (answer == "2")
         {
             DisplayPlayerAndEnemyBoards(ShipsBoard, HitsBoard);
             answer = " ";
         }
-        // Fire option
         else if (answer == "3")
         {
             cout << "Input coordinates to fire at: ";
@@ -532,15 +530,11 @@ bool Player::PlayerTurn(Player& enemy)
         cout << endl;
     }
 
-    // Fire mechanic
-
     string buffer;
     Point hitPoint;
     
-    // Input in format A1
     cin >> buffer;
-    
-    // Check if buffer is in format A1/A10
+
     while (buffer.length() < 2 || buffer.length() > 3 || buffer[0] < 'A' || buffer[0] > 'J' && 
            buffer[0] < 'a' || buffer[0] > 'j' || buffer.length() == 2 && buffer[1] < '1' || 
            buffer[1] > '9' || buffer.length() == 3 && buffer[1] > '1' || buffer[2] > '0')
@@ -552,35 +546,32 @@ bool Player::PlayerTurn(Player& enemy)
         cin >> buffer;
     }
     
-    // Format A1
     if (buffer.length() == 2)
     {
         hitPoint.x = buffer[1] - '0' - 1;
         hitPoint.y = TransformBoardChar(buffer[0]);
     }
-    // Format A10
     else if (buffer.length() == 3)
     {
         hitPoint.x = BOARD_WIDTH - 1;
         hitPoint.y = TransformBoardChar(buffer[0]);
     }
 
-    // Check if shot is successful
     if (enemy.ShipsBoard[hitPoint.x][hitPoint.y] == SHIP)
     {
         cout << endl;
         cout << "Result : HIT" << endl;
         
-        // Mark player's hit board tile with H symbol
+        // Mark player's hit board tile with X symbol
         HitsBoard[hitPoint.x][hitPoint.y] = HIT;
         
-        // Mark enemy's ship board tile with H symbol
+        // Mark enemy's ship board tile with X symbol
         enemy.ShipsBoard[hitPoint.x][hitPoint.y] = HIT;
 
-        // Get hit ship index 
+        // Get hit ship's id 
         int hitShipIdx = GetHitShipId(enemy.battleships, hitPoint);
 
-        // Modifying ship's coordinates
+        // Modify hit ship's coordinates
         for (int i = 0; i < enemy.battleships[hitShipIdx].length; i++)
         {
             Point& shipCoordinate = enemy.battleships[hitShipIdx].shipsCoordinates[i];
@@ -598,7 +589,7 @@ bool Player::PlayerTurn(Player& enemy)
             }
         }
 
-        // Check if the hit ship is destroyed
+        // Check if the hit ship was completely destroyed
         if (enemy.battleships[hitShipIdx].IsShipSunk())
         {
             switch (enemy.battleships[hitShipIdx].length)
@@ -619,17 +610,14 @@ bool Player::PlayerTurn(Player& enemy)
             
             // Add collision area around destroyed ship
             enemy.battleships[hitShipIdx].AddHitCollision(HitsBoard);
-            //  Add destroyed ship's image
             enemy.battleships[hitShipIdx].AddToHitBoard(HitsBoard);
         }
-
-        // Same player turns
         return true;
     }
-    // If shot is missed
+    // If MISS
     else
     {
-        // Mark missed shot board tile with F symbol
+        // Mark missed shot board tile with M symbol
         HitsBoard[hitPoint.x][hitPoint.y] = MISS;
         
         cout << endl;
@@ -640,7 +628,7 @@ bool Player::PlayerTurn(Player& enemy)
         while (answer != 'y' && answer != 'Y')
         {
             cout << endl;
-            cout << "Continue game?" << endl;
+            cout << "Continue?" << endl;
             cout << "Y/y: ";
             cin >> answer;
         }
@@ -650,7 +638,12 @@ bool Player::PlayerTurn(Player& enemy)
 
 }
 
-bool Player::GetShipCount()
+bool Player::GetVesselCount()
 {
     return sixTileShips + fourTileShips + threeTileShips + twoTileShips <= 0;
+}
+
+void Player::GetSunkVesselsCount()
+{
+    cout << "Sunk vessels: " << 10 - (sixTileShips + fourTileShips + threeTileShips + twoTileShips) << endl;
 }

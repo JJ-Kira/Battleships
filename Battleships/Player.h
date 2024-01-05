@@ -37,5 +37,7 @@ public:
     // Player turn
     bool PlayerTurn(Player& enemy);
 
-    bool GetShipCount();
+    bool GetVesselCount();
+
+    void GetSunkVesselsCount();
 };
