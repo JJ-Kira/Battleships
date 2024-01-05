@@ -31,7 +31,7 @@ bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
         {
             ClearConsole();
 
-            DisplayPlayerAndEnemyBoards(activePlayer.ShipBoard, activePlayer.HitBoard);
+            DisplayPlayerAndEnemyBoards(activePlayer.ShipsBoard, activePlayer.HitsBoard);
 
             cout << endl;
             cout << activePlayer.Name << " has won!" << endl;

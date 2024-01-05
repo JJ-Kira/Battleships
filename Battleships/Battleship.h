@@ -19,9 +19,9 @@ public:
     int positionNumber = -1, length = 0;
 
     // Ship coordinates on player's board
-    Point shipCoordinates[MAX_SHIP_SIZE] = {};
+    Point shipsCoordinates[MAX_SHIP_SIZE] = {};
     // Ship coordinates that were hit
-    Point hitCoordinates[MAX_SHIP_SIZE] = {};
+    Point hitsCoordinates[MAX_SHIP_SIZE] = {};
 
     // Print ship configuration in format A1 R L
     void PrintConfig();

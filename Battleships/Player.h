@@ -27,9 +27,9 @@ public:
     string Name;
 
     // Player's ship board
-    int ShipBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
+    int ShipsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
     // Player's hit board (board with successful hits of the enemy ships)
-    int HitBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
+    int HitsBoard[BOARD_HEIGHT][BOARD_WIDTH] = { 0 };
 
     // Player input or loading from file
     void PlayerStart();

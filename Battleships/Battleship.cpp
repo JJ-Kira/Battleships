@@ -125,49 +125,49 @@ void Battleship::WriteBattleshipCoordinates()
     // Maximum coordinates count is 6, all unused element have values -2
     if (directionLetter == 'r' || directionLetter == 'R')
     {
-        shipCoordinates[0].x = positionNumber - 1;
-        shipCoordinates[0].y = TransformBoardChar(positionLetter);
+        shipsCoordinates[0].x = positionNumber - 1;
+        shipsCoordinates[0].y = TransformBoardChar(positionLetter);
 
         for (int i = 1; i < length; i++)
         {
-            shipCoordinates[i].x = shipCoordinates[0].x;
-            shipCoordinates[i].y = shipCoordinates[0].y + i;
+            shipsCoordinates[i].x = shipsCoordinates[0].x;
+            shipsCoordinates[i].y = shipsCoordinates[0].y + i;
         }
     }
 
     if (directionLetter == 'l' || directionLetter == 'L')
     {
-        shipCoordinates[length - 1].x = positionNumber - 1;
-        shipCoordinates[length - 1].y = TransformBoardChar(positionLetter);
+        shipsCoordinates[length - 1].x = positionNumber - 1;
+        shipsCoordinates[length - 1].y = TransformBoardChar(positionLetter);
 
         for (int i = length - 2; i >= 0; i--)
         {
-            shipCoordinates[i].x = shipCoordinates[i + 1].x;
-            shipCoordinates[i].y = shipCoordinates[i + 1].y - 1;
+            shipsCoordinates[i].x = shipsCoordinates[i + 1].x;
+            shipsCoordinates[i].y = shipsCoordinates[i + 1].y - 1;
         }
     }
 
     if (directionLetter == 'u' || directionLetter == 'U')
     {
-        shipCoordinates[length - 1].x = positionNumber - 1;
-        shipCoordinates[length - 1].y = TransformBoardChar(positionLetter);
+        shipsCoordinates[length - 1].x = positionNumber - 1;
+        shipsCoordinates[length - 1].y = TransformBoardChar(positionLetter);
 
         for (int i = length - 2; i >= 0; i--)
         {
-            shipCoordinates[i].x = shipCoordinates[i + 1].x - 1;
-            shipCoordinates[i].y = shipCoordinates[i + 1].y;
+            shipsCoordinates[i].x = shipsCoordinates[i + 1].x - 1;
+            shipsCoordinates[i].y = shipsCoordinates[i + 1].y;
         }
     }
 
     if (directionLetter == 'd' || directionLetter == 'D')
     {
-        shipCoordinates[0].x = positionNumber - 1;
-        shipCoordinates[0].y = TransformBoardChar(positionLetter);
+        shipsCoordinates[0].x = positionNumber - 1;
+        shipsCoordinates[0].y = TransformBoardChar(positionLetter);
 
         for (int i = 1; i < length; i++)
         {
-            shipCoordinates[i].x = shipCoordinates[0].x + i;
-            shipCoordinates[i].y = shipCoordinates[0].y;
+            shipsCoordinates[i].x = shipsCoordinates[0].x + i;
+            shipsCoordinates[i].y = shipsCoordinates[0].y;
         }
     }
 
@@ -177,8 +177,8 @@ void Battleship::EraseBattleshipCoordinates()
 {
     for (int i = 0; i < MAX_SHIP_SIZE; i++)
     {
-        shipCoordinates[i].x = -2;
-        shipCoordinates[i].y = -2;
+        shipsCoordinates[i].x = -2;
+        shipsCoordinates[i].y = -2;
     }
 }
 
@@ -278,8 +278,8 @@ bool Battleship::IsColliding(int playerShipBoard[][BOARD_WIDTH])
 {
     for (int i = 0; i < length; i++)
     {
-        int x = shipCoordinates[i].x;
-        int y = shipCoordinates[i].y;
+        int x = shipsCoordinates[i].x;
+        int y = shipsCoordinates[i].y;
         
         if (playerShipBoard[x][y] == COLLISION_AREA || playerShipBoard[x][y] == SHIP)
         {
@@ -293,7 +293,7 @@ bool Battleship::IsShipSunk()
 {
     for (int i = 0; i < length; i++)
     {
-        if (shipCoordinates[i].x != -1 && shipCoordinates[i].y != -1)
+        if (shipsCoordinates[i].x != -1 && shipsCoordinates[i].y != -1)
         {
             return false;
         }
@@ -303,10 +303,10 @@ bool Battleship::IsShipSunk()
 
 void Battleship::AddHitCollision(int playerHitBoard[][BOARD_WIDTH])
 {
-    int x1 = hitCoordinates[0].x - 1;
-    int y1 = hitCoordinates[0].y - 1;
-    int x2 = hitCoordinates[length - 1].x + 1;
-    int y2 = hitCoordinates[length - 1].y + 1;
+    int x1 = hitsCoordinates[0].x - 1;
+    int y1 = hitsCoordinates[0].y - 1;
+    int x2 = hitsCoordinates[length - 1].x + 1;
+    int y2 = hitsCoordinates[length - 1].y + 1;
 
     for (int i = x1; i <= x2; i++)
     {
@@ -323,10 +323,10 @@ void Battleship::AddHitCollision(int playerHitBoard[][BOARD_WIDTH])
 
 void Battleship::AddShipCollision(int playerShipBoard[][BOARD_WIDTH])
 {
-    int x1 = shipCoordinates[0].x - 1;
-    int y1 = shipCoordinates[0].y - 1;
-    int x2 = shipCoordinates[length - 1].x + 1;
-    int y2 = shipCoordinates[length - 1].y + 1;
+    int x1 = shipsCoordinates[0].x - 1;
+    int y1 = shipsCoordinates[0].y - 1;
+    int x2 = shipsCoordinates[length - 1].x + 1;
+    int y2 = shipsCoordinates[length - 1].y + 1;
 
     for (int i = x1; i <= x2; i++)
     {
@@ -343,10 +343,10 @@ void Battleship::AddShipCollision(int playerShipBoard[][BOARD_WIDTH])
 
 void Battleship::EraseShipCollision(int playerShipBoard[][BOARD_WIDTH])
 {
-    int x1 = shipCoordinates[0].x - 1;
-    int y1 = shipCoordinates[0].y - 1;
-    int x2 = shipCoordinates[length - 1].x + 1;
-    int y2 = shipCoordinates[length - 1].y + 1;
+    int x1 = shipsCoordinates[0].x - 1;
+    int y1 = shipsCoordinates[0].y - 1;
+    int x2 = shipsCoordinates[length - 1].x + 1;
+    int y2 = shipsCoordinates[length - 1].y + 1;
 
     for (int i = x1; i <= x2; i++)
     {
@@ -365,8 +365,8 @@ void Battleship::AddToHitBoard(int playerHitBoard[][BOARD_WIDTH])
 {
     for (int i = 0; i < length; i++)
     {
-        int x = hitCoordinates[i].x;
-        int y = hitCoordinates[i].y;
+        int x = hitsCoordinates[i].x;
+        int y = hitsCoordinates[i].y;
         playerHitBoard[x][y] = SHIP;
     }
 }
@@ -375,8 +375,8 @@ void Battleship::AddToShipBoard(int playerShipBoard[][BOARD_WIDTH])
 {
     for (int i = 0; i < length; i++)
     {
-        int x = shipCoordinates[i].x;
-        int y = shipCoordinates[i].y;
+        int x = shipsCoordinates[i].x;
+        int y = shipsCoordinates[i].y;
         playerShipBoard[x][y] = SHIP;
     }
 }
@@ -385,8 +385,8 @@ void Battleship::EraseFromShipBoard(int playerShipBoard[][BOARD_WIDTH])
 {
     for (int i = 0; i < length; i++)
     {
-        int x = shipCoordinates[i].x;
-        int y = shipCoordinates[i].y;
+        int x = shipsCoordinates[i].x;
+        int y = shipsCoordinates[i].y;
         playerShipBoard[x][y] = WATER;
     }
 }
