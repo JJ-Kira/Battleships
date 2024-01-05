@@ -1,30 +1,29 @@
-# Battleships project
+# Battleships Project
 
-### Pre-game info.
+This project allows users to play the game Battleships with the following functionalities:
 
-All ship's configurations should be input in format A1 R L. No spaces after L.
-Same rules apply when creating own configuration file.
-A1 is an initial tile. R is a direction which the ship expands at. L is a ship's length.
-All ships could be input in random order.
-Standard way to input file path C:\\Users\\Username\\Documents\\Battleships1.txt.
-There are two example files with valid ship's configurations in project compressed folder.
+## Pre-game Configuration
 
-### Using preset boards (optional).
+- **Ship Configuration Format:** All ships' configurations should follow the format `A1 R L` without spaces after `L`.
+  - `A1` denotes the initial tile.
+  - `R` indicates the direction in which the ship expands.
+  - `L` represents the ship's length.
+- **Creating Configuration File:** Use the same format for creating your own configuration file.
+- **File Path Format:** The standard way to input file paths is `C:\\Users\\Username\\Documents\\Battleships1.txt`.
+- **Example Files:** Two example files with valid ship configurations are available in the project's compressed folder.
 
-Preset boards are to be defined in .txt file.
-If user chose loading from file , in case of incorrect preset, user could correct it.
+## Using Preset Boards (Optional)
 
-### Board builder.
+- **Definition in .txt File:** Preset boards can be defined in a .txt file.
+- **Error Handling:** If a user chooses to load from a file, any incorrect presets can be corrected.
 
-* Used for creating board manually by player.
-* Add new ships, edit existing ones, see current board.
+## Board Builder
 
-### Gameplay.
+- **Manual Board Creation:** Allows players to create the board manually.
+- **Functions:** Add new ships, edit existing ones, and view the current board layout.
 
-* Players take turns attacking each other.
-* Each turn, the player can see his own board and the board with hits.
-* When a player destroys all opponent's ships, game ends
+## Gameplay
 
-<p align="left">
-  <img src="Board.png">
-</p>
+- **Turn-Based Attacks:** Players take turns attacking each other.
+- **Board Visibility:** Each turn, the player can view their own board and the board showing hits.
+- **Game End:** The game ends when a player destroys all of their opponent's ships.
