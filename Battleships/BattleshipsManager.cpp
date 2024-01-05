@@ -2,28 +2,36 @@
 
 using namespace std;
 
-BattleshipsManager::BattleshipsManager(string name1, string name2) {
+BattleshipsManager::BattleshipsManager(string name1, string name2, int numberOfPlayers) {
 	player1.Name = name1;
 	player2.Name = name2;
+    mode = numberOfPlayers;
 
     ClearConsole();
     player1.PlayerStart();
 
     ClearConsole();
-    player2.PlayerStart();
+    if (mode == 2)
+        player2.PlayerStart();
+    else if (mode == 1)
+        enemy.PlayerStart();
 }
 
 void BattleshipsManager::LetTheGameBegin() {
-    Player currentPlayer = player1;
+    Player *currentPlayer = &player1;
 
     while (true)
     {
-        if (NextTurn(player1, player2)) return;
-        if (NextTurn(player2, player1)) return;
+        if (mode == 2)
+            if (NextTurn(player1, player2)) return;
+            if (NextTurn(player2, player1)) return;
+        else if (mode == 1)
+            if (NextTurn(player1, enemy)) return;
+            if (NextTurn(enemy, player1)) return;
     }
 }
 
-bool BattleshipsManager::NextTurn(Player activePlayer, Player activeEnemy) {
+bool BattleshipsManager::NextTurn(Player &activePlayer, Player &activeEnemy) {
     while (activePlayer.PlayerTurn(activeEnemy))
     {
         if (activeEnemy.GetVesselCount())

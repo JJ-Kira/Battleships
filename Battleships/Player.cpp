@@ -420,7 +420,7 @@ bool Player::PlayerTurn(Player& enemy)
     ClearConsole();
     cout << endl;
     cout << "________________________________" << endl;
-    cout << Name << "'s turn :" << endl;
+    cout << Name << "'s turn:" << endl;
     cout << "--------------------------------" << endl;
     cout << endl;
 
@@ -496,10 +496,8 @@ bool Player::PlayerTurn(Player& enemy)
         cout << endl;
         cout << "Result : HIT" << endl;
         
-        // Zaznacz trafione uderzenie X
         HitsBoard[hitPoint.x][hitPoint.y] = HIT;
         
-        // MZaznacz trafione uderzenie X
         enemy.ShipsBoard[hitPoint.x][hitPoint.y] = HIT;
 
         int hitShipIdx = GetHitShipId(enemy.battleships, hitPoint);
@@ -519,7 +517,6 @@ bool Player::PlayerTurn(Player& enemy)
             }
         }
 
-        // Sprawdz, czy statek zatopiono
         if (enemy.battleships[hitShipIdx].IsShipSunk())
         {
             switch (enemy.battleships[hitShipIdx].length)
@@ -543,10 +540,9 @@ bool Player::PlayerTurn(Player& enemy)
         }
         return true;
     }
-    // Przy chybieniu
+
     else
     {
-        // Zaznaczenie nietrafionego strzalu M
         HitsBoard[hitPoint.x][hitPoint.y] = MISS;
         
         cout << endl;
@@ -564,7 +560,6 @@ bool Player::PlayerTurn(Player& enemy)
 
         return false;
     }
-
 }
 
 bool Player::GetVesselCount()
@@ -574,5 +569,5 @@ bool Player::GetVesselCount()
 
 void Player::GetSunkVesselsCount()
 {
-    cout << "Sunk vessels: " << 10 - (sixTileShips + fourTileShips + threeTileShips + twoTileShips) << endl;
+    cout << "Sunk enemy vessels: " << 10 - (sixTileShips + fourTileShips + threeTileShips + twoTileShips) << endl;
 }

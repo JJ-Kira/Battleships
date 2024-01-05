@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArtificialEnemy.cpp" />
     <ClCompile Include="Battleship.cpp" />
     <ClCompile Include="BattleshipsManager.cpp" />
     <ClCompile Include="Display.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArtificialEnemy.h" />
     <ClInclude Include="Battleship.h" />
     <ClInclude Include="BattleshipsManager.h" />
     <ClInclude Include="Constants.h" />
